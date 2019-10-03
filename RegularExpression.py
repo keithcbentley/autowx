@@ -46,8 +46,8 @@ class ViewModel:
     def execute_button_set_command(self, command):
         self.re_execute_button.Bind(wx.EVT_BUTTON, lambda event: command(self))
 
-    #    def file_button_set_command(self, command):
-    #        self.input_file_button['command'] = lambda: command(self)
+    def file_button_set_command(self, command):
+        self.input_file_button.Bind(wx.EVT_BUTTON, lambda event: command(self))
 
     def re_text_get(self) -> str:
         return self.re_text.Value
@@ -260,18 +260,25 @@ def re_execute_button_command(view_model):
     view_model_adapter.end_output()
 
 
-# def file_button_command(view_model):
-#    file_name = filedialog.askopenfilename()
-#    if file_name:
-#        file = open(file_name, 'r')
-#        contents = file.read()
-#        view_model.input_text_set(contents)
+def file_button_command(view_model):
+#    wildcard = "JPEG files (*.jpg) |*.*"
+    with wx.FileDialog(
+            parent=None,
+            message="Choose a file",
+#            wildcard=wildcard,
+            style=wx.FD_OPEN) as dialog:
+        if dialog.ShowModal() == wx.ID_OK:
+            file_name = dialog.GetPath()
+            file = open(file_name, 'r')
+            contents = file.read()
+            view_model.input_text_set(contents)
 
 
 def main():
     app = wx.App()
     ui = ViewModel()
     ui.execute_button_set_command(re_execute_button_command)
+    ui.file_button_set_command(file_button_command)
     ui.frame.Show()
     app.MainLoop()
 
