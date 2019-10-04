@@ -30,19 +30,19 @@ import wx
 # RadioBox
 # ScrolledCanvas
 # ScrolledWindow
-# ScrollBar
+# ScrollBar initial
 # SingleChoiceDialog
-# Slider
-# SpinButton
-# SpinCtrl
-# SpinCtrlDouble
+# Slider initial
+# SpinButton initial
+# SpinCtrl initial
+# SpinCtrlDouble initial
 # SplitterWindow
-# StaticBitmap
-# StaticLine
-# StaticText
+# StaticBitmap initial
+# StaticLine initial
+# StaticText initial
 # StatusBar
 # TipWindow
-# ToggleButton
+# ToggleButton initial
 # ToolBar
 # ToolTip
 # TreeCtrl
@@ -178,6 +178,46 @@ class AutoScrollBar(wx.ScrollBar):
         common_autoinit(self, args, kwargs)
 
 
+class AutoSlider(wx.Slider):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
+class AutoSpinButton(wx.SpinButton):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
+class AutoSpinCtrl(wx.SpinCtrl):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
+class AutoSpinCtrlDouble(wx.SpinCtrlDouble):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
+class AutoStaticBitmap(wx.StaticBitmap):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
+class AutoStaticLine(wx.StaticLine):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
+class AutoStaticText(wx.StaticText):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
+class AutoToggleButton(wx.ToggleButton):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
 class UI:
     def __init__(self):
         self.frame: AutoFrame = AutoFrame(parent=None, title='Regular Expression', size=(600, 400))
@@ -196,6 +236,15 @@ class UI:
         self.gauge.Value = 25
         self.listbox = AutoListBox(parent=self.main_panel, choices=choices)
         self.scrollbar = AutoScrollBar(parent=self.main_panel)
+        self.slider = AutoSlider(parent=self.main_panel)
+        self.spinbutton = AutoSpinButton(parent=self.main_panel)
+        self.spinctrl = AutoSpinCtrl(parent=self.main_panel)
+        self.spinctrldouble = AutoSpinCtrlDouble(parent=self.main_panel, inc=.1)
+        self.staticbitmap = AutoStaticBitmap(parent=self.main_panel, bitmap=wx.Bitmap(100, 100), size=(100, 100))
+        self.staticline = AutoStaticLine(parent=self.main_panel, size=(100, 5), flag=wx.ALL, border=5)
+        self.statictext = AutoStaticText(parent=self.main_panel, label='StaticText', flag=wx.ALL, border=5)
+        self.togglebutton = AutoToggleButton(parent=self.main_panel, label='ToggleButton')
+
 
 if __name__ == '__main__':
     def main():
