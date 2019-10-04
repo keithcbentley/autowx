@@ -261,7 +261,6 @@ def re_execute_button_command(view_model):
 
 
 def file_button_command(view_model):
-#    wildcard = "JPEG files (*.jpg) |*.*"
     with wx.FileDialog(
             parent=None,
             message="Choose a file",
