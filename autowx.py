@@ -85,15 +85,20 @@ def extract_kws(kwargs, *args):
 
 
 def extract_add_args(kwargs):
-    add_args = extract_kws(kwargs, 'proportion', 'flag', 'border')
+    add_args = extract_kws(kwargs, 'proportion', 'flag', 'border', 'userData', 'pos', 'span')
     return add_args
+
+
+def extract_sizer_args(kwargs):
+    sizer_args = extract_kws(kwargs, 'sizer', 'orient', 'sizerClass', 'rows', 'cols', 'vgap', 'hgap', 'gap')
+    return sizer_args
 
 
 def common_autoinit(self, args, kwargs):
     add_args = extract_add_args(kwargs)
     t = type(self)
     super(t, self).__init__(*args, **kwargs)
-    parent = kwargs['parent']
+    parent = kwargs.get('parent')
     if parent:
         if parent.GetSizer():
             parent.GetSizer().Add(self, **add_args)
@@ -106,21 +111,31 @@ class AutoFrame(wx.Frame):
 
 class AutoPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
-        sizer_args = extract_kws(kwargs, 'orient')
+        sizer_args = extract_sizer_args(kwargs)
         add_args = extract_add_args(kwargs)
         super().__init__(*args, **kwargs)
-        self.SetSizer(wx.BoxSizer(**sizer_args))
-        parent = kwargs['parent']
+        sizer = sizer_args.get('sizer')
+        sizerClass = sizer_args.get('sizerClass')
+        if sizer:
+            self.SetSizer(sizer)
+        elif sizerClass:
+            extract_kws(sizer_args, 'sizerClass')
+            self.SetSizer(sizerClass(**sizer_args))
+        else:
+            self.SetSizer(wx.BoxSizer(**sizer_args))
+        parent = kwargs.get('parent')
         if parent.GetSizer():
             parent.GetSizer().Add(self, **add_args)
 
 
 class AutoStaticBox(wx.StaticBox):
     def __init__(self, *args, **kwargs):
+        sizer_args = extract_sizer_args(kwargs)
         add_args = extract_add_args(kwargs)
         super().__init__(*args, **kwargs)
-        self.sizer = wx.StaticBoxSizer(box=self)
-        parent = kwargs['parent']
+        sizer_args['box'] = self
+        self.sizer = wx.StaticBoxSizer(**sizer_args)
+        parent = kwargs.get('parent')
         if parent.GetSizer():
             parent.GetSizer().Add(self.sizer, **add_args)
 
@@ -221,9 +236,11 @@ class AutoToggleButton(wx.ToggleButton):
 class UI:
     def __init__(self):
         self.frame: AutoFrame = AutoFrame(parent=None, title='Regular Expression', size=(600, 400))
-        self.main_panel: AutoPanel = AutoPanel(parent=self.frame, orient=wx.VERTICAL)
+        self.main_panel: AutoPanel = AutoPanel(parent=self.frame,
+                                               sizerClass=wx.FlexGridSizer, cols=3,
+                                               rows=0, gap=(10, 10))
         self.main_panel.SetBackgroundColour(wx.Colour(255, 255, 0))
-        self.button = AutoButton(parent=self.main_panel, label='AutoButton')
+        self.button = AutoButton(parent=self.main_panel, label='Refresh')
         self.radio_button1 = AutoRadioButton(parent=self.main_panel, label='AutoRadioButton1', style=wx.RB_GROUP)
         self.radio_button2 = AutoRadioButton(parent=self.main_panel, label='AutoRadioButton2')
         self.checkbox = AutoCheckBox(parent=self.main_panel, label='AutoCheckBox')
@@ -244,12 +261,27 @@ class UI:
         self.staticline = AutoStaticLine(parent=self.main_panel, size=(100, 5), flag=wx.ALL, border=5)
         self.statictext = AutoStaticText(parent=self.main_panel, label='StaticText', flag=wx.ALL, border=5)
         self.togglebutton = AutoToggleButton(parent=self.main_panel, label='ToggleButton')
+        self.panel2 = AutoPanel(parent=self.main_panel, sizerClass=wx.GridBagSizer)
+        self.panel2.SetBackgroundColour(wx.Colour(200, 255, 200))
+        self.button = AutoButton(parent=self.panel2, label='AutoButton', pos=(0, 0))
+        self.button = AutoButton(parent=self.panel2, label='AutoButton', pos=(1, 1))
+        self.button = AutoButton(parent=self.panel2, label='AutoButton', pos=(2, 2))
+        self.panel3 = AutoStaticBox(parent=self.main_panel, label='AutoStaticBox', flag=wx.TOP, border=-3,
+                                    orient=wx.VERTICAL)
+        self.button = AutoButton(parent=self.panel3, label='AutoButton')
+        self.button = AutoButton(parent=self.panel3, label='AutoButton')
+        self.button = AutoButton(parent=self.panel3, label='AutoButton')
 
 
 if __name__ == '__main__':
+    def refresh_main_panel(ui: UI):
+        ui.main_panel.Refresh()
+
+
     def main():
         app = wx.App()
         ui = UI()
+        ui.button.Bind(wx.EVT_BUTTON, lambda event: refresh_main_panel(ui))
         ui.frame.Show()
         app.MainLoop()
 
