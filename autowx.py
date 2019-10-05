@@ -2,7 +2,12 @@ import typing
 import wx
 
 
-# Choicebook Listbook Notebook Simplebook Toolbook Treebook
+# Choicebook initial
+# Listbook initial
+# Notebook initial
+# Simplebook initial
+# Toolbook
+# Treebook
 # CheckListBox initial
 # Choice initial
 # CollapsiblePane
@@ -233,6 +238,36 @@ class AutoToggleButton(wx.ToggleButton):
         common_autoinit(self, args, kwargs)
 
 
+class AutoNotebook(wx.Notebook):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
+class AutoListbook(wx.Listbook):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
+class AutoChoicebook(wx.Choicebook):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
+class AutoSimplebook(wx.Simplebook):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
+class AutoToolbook(wx.Toolbook):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
+class AutoTreebook(wx.Treebook):
+    def __init__(self, *args, **kwargs):
+        common_autoinit(self, args, kwargs)
+
+
 class UI:
     def __init__(self):
         self.frame: AutoFrame = AutoFrame(parent=None, title='Regular Expression', size=(600, 400))
@@ -271,6 +306,82 @@ class UI:
         self.button = AutoButton(parent=self.panel3, label='AutoButton')
         self.button = AutoButton(parent=self.panel3, label='AutoButton')
         self.button = AutoButton(parent=self.panel3, label='AutoButton')
+
+        self.notebook = AutoNotebook(parent=self.main_panel)
+        self.page1_panel = AutoPanel(parent=self.notebook, sizerClass=wx.GridBagSizer)
+        self.page1_panel.SetBackgroundColour(wx.Colour(200, 255, 200))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton1', pos=(0, 0))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton1', pos=(1, 1))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton1', pos=(2, 2))
+        self.notebook.AddPage(page=self.page1_panel, text='Page1')
+
+        self.page2_panel = AutoPanel(parent=self.notebook, sizerClass=wx.GridBagSizer)
+        self.page2_panel.SetBackgroundColour(wx.Colour(200, 255, 200))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton2', pos=(0, 0))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton2', pos=(1, 1))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton2', pos=(2, 2))
+        self.notebook.AddPage(page=self.page2_panel, text='Page2')
+
+        self.listbook = AutoListbook(parent=self.main_panel)
+        self.page1_panel = AutoPanel(parent=self.listbook, sizerClass=wx.GridBagSizer)
+        self.page1_panel.SetBackgroundColour(wx.Colour(200, 255, 200))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton L1', pos=(0, 0))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton L1', pos=(1, 1))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton L1', pos=(2, 2))
+        self.listbook.AddPage(page=self.page1_panel, text='Page1')
+
+        self.page2_panel = AutoPanel(parent=self.listbook, sizerClass=wx.GridBagSizer)
+        self.page2_panel.SetBackgroundColour(wx.Colour(200, 255, 200))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton L2', pos=(0, 0))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton L2', pos=(1, 1))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton L2', pos=(2, 2))
+        self.listbook.AddPage(page=self.page2_panel, text='Page2')
+
+        self.choicebook = AutoChoicebook(parent=self.main_panel)
+        self.page1_panel = AutoPanel(parent=self.choicebook, sizerClass=wx.GridBagSizer)
+        self.page1_panel.SetBackgroundColour(wx.Colour(200, 255, 200))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton C1', pos=(0, 0))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton C1', pos=(1, 1))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton C1', pos=(2, 2))
+        self.choicebook.AddPage(page=self.page1_panel, text='Page1')
+
+        self.page2_panel = AutoPanel(parent=self.choicebook, sizerClass=wx.GridBagSizer)
+        self.page2_panel.SetBackgroundColour(wx.Colour(200, 255, 200))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton C2', pos=(0, 0))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton C2', pos=(1, 1))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton C2', pos=(2, 2))
+        self.choicebook.AddPage(page=self.page2_panel, text='Page2')
+
+        self.simplebook = AutoSimplebook(parent=self.main_panel)
+        self.page1_panel = AutoPanel(parent=self.simplebook, sizerClass=wx.GridBagSizer)
+        self.page1_panel.SetBackgroundColour(wx.Colour(200, 255, 200))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton S1', pos=(0, 0))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton S1', pos=(1, 1))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton S1', pos=(2, 2))
+        self.simplebook.AddPage(page=self.page1_panel, text='Page1')
+
+        self.page2_panel = AutoPanel(parent=self.simplebook, sizerClass=wx.GridBagSizer)
+        self.page2_panel.SetBackgroundColour(wx.Colour(200, 255, 200))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton S2', pos=(0, 0))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton S2', pos=(1, 1))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton S2', pos=(2, 2))
+        self.simplebook.AddPage(page=self.page2_panel, text='Page2')
+        self.simplebook.SetSelection(1)
+
+        self.treebook = AutoTreebook(parent=self.main_panel)
+        self.page1_panel = AutoPanel(parent=self.treebook, sizerClass=wx.GridBagSizer)
+        self.page1_panel.SetBackgroundColour(wx.Colour(200, 255, 200))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton T1', pos=(0, 0))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton T1', pos=(1, 1))
+        self.button = AutoButton(parent=self.page1_panel, label='AutoButton T1', pos=(2, 2))
+        self.treebook.AddPage(page=self.page1_panel, text='Page1')
+
+        self.page2_panel = AutoPanel(parent=self.treebook, sizerClass=wx.GridBagSizer)
+        self.page2_panel.SetBackgroundColour(wx.Colour(200, 255, 200))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton T2', pos=(0, 0))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton T2', pos=(1, 1))
+        self.button = AutoButton(parent=self.page2_panel, label='AutoButton T2', pos=(2, 2))
+        self.treebook.AddPage(page=self.page2_panel, text='Page2')
 
 
 if __name__ == '__main__':
