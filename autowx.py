@@ -7,7 +7,7 @@ import wx
 # Notebook initial
 # Simplebook initial
 # Toolbook
-# Treebook
+# Treebook initial
 # CheckListBox initial
 # Choice initial
 # CollapsiblePane
@@ -17,7 +17,6 @@ import wx
 # Gauge initial
 # GenericDirCtrl
 # HeaderCtrl
-# HScrolledWindow
 # Listbox initial
 # ListCtrl
 # ListView
@@ -268,9 +267,38 @@ class AutoTreebook(wx.Treebook):
         common_autoinit(self, args, kwargs)
 
 
+class AutoMenuBar(wx.MenuBar):
+    def __init__(self, *args, **kwargs):
+        frame_args = extract_kws(kwargs, 'frame')
+        super().__init__(*args, **kwargs)
+        frame = frame_args.get('frame')
+        if frame:
+            frame.SetMenuBar(self)
+
+
+class AutoMenu(wx.Menu):
+    def __init__(self, *args, **kwargs):
+        append_args = extract_kws(kwargs, 'menuBar', 'title')
+        super().__init__(*args, **kwargs)
+        menuBar = append_args.get('menuBar')
+        if menuBar:
+            extract_kws(append_args, 'menuBar')
+            append_args['menu'] = self
+            menuBar.Append(**append_args)
+
+
+class AutoMenuItem(wx.MenuItem):
+    def __init__(self, *args, **kwargs):
+        menu_args = extract_kws(kwargs, 'menu')
+        super().__init__(*args, **kwargs)
+        menu = menu_args.get('menu')
+        if menu:
+            menu.Append(self)
+
+
 class UI:
     def __init__(self):
-        self.frame: AutoFrame = AutoFrame(parent=None, title='Regular Expression', size=(600, 400))
+        self.frame: AutoFrame = AutoFrame(parent=None, title='Autocontrol Sampler', size=(600, 400))
         self.main_panel: AutoPanel = AutoPanel(parent=self.frame,
                                                sizerClass=wx.FlexGridSizer, cols=3,
                                                rows=0, gap=(10, 10))
@@ -382,6 +410,15 @@ class UI:
         self.button = AutoButton(parent=self.page2_panel, label='AutoButton T2', pos=(1, 1))
         self.button = AutoButton(parent=self.page2_panel, label='AutoButton T2', pos=(2, 2))
         self.treebook.AddPage(page=self.page2_panel, text='Page2')
+
+        self.menubar = AutoMenuBar(frame=self.frame)
+        self.menu1 = AutoMenu(menuBar=self.menubar, title='Menu1')
+        self.menuitem1_1 = AutoMenuItem(id=wx.ID_ANY, text='Menu Item 1 1', menu=self.menu1)
+        self.menuitem1_2 = AutoMenuItem(id=wx.ID_ANY, text='Menu Item 1 2', menu=self.menu1)
+
+        self.menu2 = AutoMenu(menuBar=self.menubar, title='Menu2')
+        self.menuitem2_1 = AutoMenuItem(id=wx.ID_ANY, text='Menu Item 2 1', menu=self.menu2)
+        self.menuitem2_2 = AutoMenuItem(id=wx.ID_ANY, text='Menu Item 2 2', menu=self.menu2)
 
 
 if __name__ == '__main__':
